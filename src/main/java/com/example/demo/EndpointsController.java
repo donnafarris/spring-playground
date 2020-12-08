@@ -1,6 +1,10 @@
 package com.example.demo;
 
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/math")
@@ -45,5 +49,17 @@ public class EndpointsController {
             z = Integer.toString(Integer.parseInt(x) / Integer.parseInt(y));
         }
         return String.format("%s %s %s = %s", x, math, y, z);
+    }
+
+    @PostMapping("/sum")
+    public String sum(@RequestParam MultiValueMap<String, String> queryString){
+        int sum = 0;
+        List<String> valStrings = (queryString.values().stream().flatMap(Collection::stream).collect(Collectors.toList()));
+        List<Integer> valInts = (valStrings.stream().map(Integer::parseInt).collect(Collectors.toList()));
+        int[] primValInts = (valInts.stream().mapToInt(Integer::intValue).toArray());
+        for (int primValInt : primValInts) {
+            sum += primValInt;
+        }
+        return Arrays.stream(primValInts).mapToObj(String::valueOf).collect(Collectors.joining(" + ")) + " = " + sum;
     }
 }
