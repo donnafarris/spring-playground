@@ -93,4 +93,22 @@ class EndpointsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect((content().string("4 + 5 + 6 = 15")));
     }
+
+    @Test
+    public void testCalculateVolume60() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.get("/math/volume/3/4/5");
+
+        this.mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect((content().string("The volume of a 3x4x5 rectangle is 60")));
+    }
+
+    @Test
+    public void testCalculateVolume336() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.get("/math/volume/6/7/8");
+
+        this.mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect((content().string("The volume of a 6x7x8 rectangle is 336")));
+    }
 }

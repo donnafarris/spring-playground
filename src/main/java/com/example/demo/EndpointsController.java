@@ -31,4 +31,13 @@ public class EndpointsController {
         math.setN(n);
         return math.performSummation();
     }
+
+    @RequestMapping("/volume/{length}/{width}/{height}")
+    public String getVolume(@PathVariable int length, @PathVariable int width, @PathVariable int height){
+        MathService math = new MathService();
+        math.setLength(length);
+        math.setWidth(width);
+        math.setHeight(height);
+        return math.calculateVolume();
+    }
 }

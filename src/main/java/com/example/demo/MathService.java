@@ -5,6 +5,9 @@ public class MathService {
     private int y;
     private String operation = "add";
     private Integer[] n;
+    private int length;
+    private int width;
+    private int height;
 
     public void setX(int x){
         this.x = x;
@@ -60,5 +63,22 @@ public class MathService {
 
     public Integer[] getN() {
         return this.n;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public String calculateVolume() {
+        int volume = this.length * this.width * this.height;
+        return String.format("The volume of a %sx%sx%s rectangle is %s", length, width, height, volume);
     }
 }
