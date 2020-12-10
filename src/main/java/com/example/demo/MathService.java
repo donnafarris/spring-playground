@@ -8,6 +8,7 @@ public class MathService {
     private int length;
     private int width;
     private int height;
+    private int radius;
 
     public void setX(int x){
         this.x = x;
@@ -80,5 +81,24 @@ public class MathService {
     public String calculateVolume() {
         int volume = this.length * this.width * this.height;
         return String.format("The volume of a %sx%sx%s rectangle is %s", length, width, height, volume);
+    }
+
+    public void setRadius(String radius) {
+        this.radius = Integer.parseInt(radius);
+    }
+
+    public double calculateArea(String type) {
+        double area;
+        switch (type) {
+            case "circle":
+                area = Math.PI * this.radius * this.radius;
+                return area;
+            case "rectangle":
+                area = this.width * this.height;
+                return area;
+            default:
+                area = Double.parseDouble(null);
+                return area;
+        }
     }
 }

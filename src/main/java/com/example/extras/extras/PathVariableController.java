@@ -1,10 +1,8 @@
-package com.example.demo;
+package com.example.extras.extras;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @RestController
 public class PathVariableController {
@@ -28,5 +26,7 @@ public class PathVariableController {
     public String getCommentsForTask(TaskIds ids) {
         return String.format("taskId is %d; commentId is %s", ids.getTaskId(), ids.getCommentId());
     }
+
+
 
 }

@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import org.springframework.http.MediaType;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,5 +40,25 @@ public class EndpointsController {
         math.setWidth(width);
         math.setHeight(height);
         return math.calculateVolume();
+    }
+
+    @PostMapping(value = "/area", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String getArea(@RequestParam Map<String, String> params){
+        StringBuilder res = new StringBuilder();
+        MathService math = new MathService();
+        switch (params.get("type")) {
+            case "circle":
+                math.setRadius(params.get("radius"));
+                res.append(String.format("Area of a circle with a radius of %s is %s", params.get("radius"), math.calculateArea("circle")));
+                return res.toString();
+            case "rectangle":
+                math.setWidth(Integer.parseInt(params.get("width")));
+                res.append(String.format("Area of a %sx%s rectangle is %s", params.get("width"), params.get("height"), math.calculateArea("rectangle")));
+                return res.toString();
+            default:
+                res.append("Invalid");
+                return res.toString();
+
+        }
     }
 }
