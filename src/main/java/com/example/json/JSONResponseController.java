@@ -1,10 +1,12 @@
 package com.example.json;
-
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.springframework.web.bind.annotation.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -73,9 +75,20 @@ public class JSONResponseController {
         return flight;
     }
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonNaming(PropertyNamingStrategy.UpperCamelCaseStrategy.class)
 
+    @PostMapping(value = "/flights/tickets/total")
+    public String postTickets(@RequestBody Flight flights) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<Ticket> ticketList = flights.getTickets();
+        int total = 0;
+        for (Ticket ticket : ticketList) {
+            total += ticket.getPrice();
+        }
+        return "{\n  \"result\": " + mapper.writeValueAsString(total) + "\n}";
+    }
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+//    @JsonNaming(PropertyNamingStrategy.UpperCamelCaseStrategy.class)
     public static class Person {
         private String firstName;
         private String lastName;
@@ -97,14 +110,16 @@ public class JSONResponseController {
         }
     }
 
-    @JsonNaming(PropertyNamingStrategy.UpperCamelCaseStrategy.class)
+//    @JsonNaming(PropertyNamingStrategy.UpperCamelCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonSerialize
     public static class Flight {
 
         private Date departsOn;
         private List<Ticket> tickets;
 
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-        @JsonGetter("Departs")
+        @JsonGetter("departs")
         public Date getDepartsOn() { return departsOn; }
 
         public void setDepartsOn(Date dateTime) { this.departsOn = dateTime; }
@@ -113,7 +128,8 @@ public class JSONResponseController {
 
         public List<Ticket> getTickets() { return tickets; }
     }
-    @JsonNaming(PropertyNamingStrategy.UpperCamelCaseStrategy.class)
+
+//    @JsonNaming(PropertyNamingStrategy.UpperCamelCaseStrategy.class)
     public static class Ticket {
         private Person passenger;
         private int price;
